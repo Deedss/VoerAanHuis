@@ -1,0 +1,2 @@
+Added base project to the git. From here all updates will be done.
+
