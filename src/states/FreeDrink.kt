@@ -1,0 +1,4 @@
+package states
+
+class FreeDrink {
+}

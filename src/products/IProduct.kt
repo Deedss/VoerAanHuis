@@ -1,0 +1,4 @@
+package products
+
+interface IProduct{
+}
