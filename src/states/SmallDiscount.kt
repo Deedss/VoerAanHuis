@@ -1,4 +1,4 @@
 package states
 
-class SmallDiscount {
+class SmallDiscount : DiscountState() {
 }

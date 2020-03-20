@@ -1,2 +1,3 @@
-class Observer {
+abstract class Observer {
+    abstract fun update()
 }

@@ -1,4 +1,4 @@
 package states
 
-class DiscountState {
+abstract class DiscountState {
 }

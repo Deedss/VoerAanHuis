@@ -1,4 +1,4 @@
 package products
 
-interface IProduct{
+interface IProduct {
 }

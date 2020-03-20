@@ -1,4 +1,4 @@
 package states
 
-class FreeDrink {
+class FreeDrink : DiscountState() {
 }
