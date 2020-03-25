@@ -2,7 +2,7 @@ import userInterface.CustomerUi
 import userInterface.RestaurantUi
 
 class OrderManager() {
-    private var orders : MutableList<Order> = TODO()
+    private lateinit var orders : MutableList<Order>
     private var observers : MutableList<Observer> = mutableListOf(CustomerUi(), RestaurantUi())
 
     fun addOrder(order : Order) : Boolean {
@@ -11,7 +11,7 @@ class OrderManager() {
 
     fun updateOrders() {
         for (observer in observers) {
-            observer.update()
+            observer.update(orders.last())
         }
     }
 }

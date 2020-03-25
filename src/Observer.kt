@@ -1,3 +1,3 @@
 abstract class Observer {
-    abstract fun update()
+    abstract fun update(order: Order)
 }

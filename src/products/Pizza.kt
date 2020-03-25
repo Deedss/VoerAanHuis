@@ -1,5 +1,5 @@
 package products
 
 class Pizza : IProduct {
-    var price : Float = 0.0f
+    override var price : Float = 3.0f
 }

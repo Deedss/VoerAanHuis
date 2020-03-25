@@ -1,13 +1,13 @@
-import products.IProduct
-import products.Pizza
+import products.*
+import states.*
 
 class Order() {
     private lateinit var customer : Customer
-    private lateinit var products : MutableList<Pizza>
+    private lateinit var products : MutableList<IProduct>
     private lateinit var pizzeria: Pizzeria
     var price : Float = 0F
 
-    constructor(customer : Customer, products : MutableList<Pizza>, pizzeria: Pizzeria) : this() {
+    constructor(customer : Customer, products : MutableList<IProduct>, pizzeria: Pizzeria) : this() {
         this.customer = customer
         this.products = products
         this.pizzeria = pizzeria
@@ -17,5 +17,13 @@ class Order() {
         }
     }
 
+    fun checkForDiscount() {
+        when (customer.state){
+            is NoDiscount -> price
+            is SmallDiscount -> price * 0.95
+            is FreeDrink -> products.add(Soda())
+            is FreePizza -> products.add(Pizza())
+        }
+    }
 
 }

@@ -1,4 +1,0 @@
-package products
-
-interface IProductDecorator {
-}
