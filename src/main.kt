@@ -1,3 +1,5 @@
+import javafx.application.Application
+
 fun main() {
-    OrderManager()
+    Application.launch(OrderManager()::class.java)
 }

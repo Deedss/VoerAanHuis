@@ -2,9 +2,15 @@ package userInterface
 
 import Observer
 import Order
+import javafx.fxml.FXML
+import javafx.fxml.FXMLLoader
+import javafx.scene.Scene
+import javafx.scene.control.TitledPane
+import javafx.stage.Stage
 
-class RestaurantUi : Observer() {
+open class RestaurantUi(): Observer(){
+
     override fun update(order: Order) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("Not yet implemented")
     }
 }
