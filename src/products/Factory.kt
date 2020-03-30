@@ -3,9 +3,10 @@ package products
 import products.decorators.*
 
 abstract class Factory {
-    fun createPizza(base : String, extras : List<String>) : IProduct? {
+    fun createPizza(base: String, extras: MutableList<String>) : IProduct? {
         var product : IProduct? = null
 
+        // Make the base Pizza by utilizing the decorator as well.
         if (base == "Base") {
             product = Pizza()
         }
@@ -19,6 +20,7 @@ abstract class Factory {
             product = Tuna(Pepperoni(Cheese(Pizza())))
         }
 
+        // Implement the decorator to add new Items to the pizza list.
         for (string in extras) {
             if (string == "Extra Cheese") {
                 product = Cheese(product)

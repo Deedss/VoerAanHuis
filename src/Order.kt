@@ -3,21 +3,19 @@ import states.*
 
 class Order() {
     private lateinit var customer : Customer
-    private lateinit var products : MutableList<IProduct>
+    var products : MutableList<IProduct> = mutableListOf()
     private lateinit var pizzeria: Pizzeria
     var price : Float = 0F
 
-    constructor(customer : Customer, products : MutableList<IProduct>, pizzeria: Pizzeria) : this() {
+    constructor(customer: Customer, product : IProduct?, pizzeria: Pizzeria) : this() {
         this.customer = customer
-        this.products = products
+        products.add(product!!)
         this.pizzeria = pizzeria
 
-        for (pizza in products) {
-            price += pizza.price
-        }
+        checkForDiscount()
     }
 
-    fun checkForDiscount() {
+    private fun checkForDiscount() {
         when (customer.state){
             is NoDiscount -> price
             is SmallDiscount -> price * 0.95

@@ -1,18 +1,22 @@
 import javafx.application.Application
-import javafx.fxml.FXMLLoader
-import javafx.scene.Scene
-import javafx.scene.control.ComboBox
 import javafx.stage.Stage
 import userInterface.CustomerUi
 import userInterface.RestaurantUi
 
 class OrderManager() : Application() {
     private lateinit var orders : MutableList<Order>
-    lateinit var customerUi : CustomerUi
-    lateinit var restaurantUi : RestaurantUi
+    var pizzeria : Pizzeria = Pizzeria()
+    var customer : Customer = Customer("Gertjan", "Poelsnip 4")
+    private lateinit var customerUi : CustomerUi
+    private lateinit var restaurantUi : RestaurantUi
     private lateinit var observers : MutableList<Observer>
 
-    fun addOrder(order : Order) : Boolean {
+    fun addOrder(customer: Customer, base: String, list: MutableList<String>) : Boolean {
+
+        val product= pizzeria.createPizza(base, list)
+        val order = Order(customer, product, pizzeria)
+
+        updateOrders()
         return orders.add(order)
     }
 
@@ -22,23 +26,19 @@ class OrderManager() : Application() {
         }
     }
 
+    /**
+     * Starts the whole application. Creates both UI's and adds them to the list of observers.
+     */
     override fun start(stage: Stage?) {
-        customerUi = CustomerUi()
-        restaurantUi = RestaurantUi()
+        // Initialize objects
+        customerUi = CustomerUi(this, customer)
+        restaurantUi = RestaurantUi(this, pizzeria)
 
-        customerUi.ingredients1.items = customerUi.items
-        customerUi.ingredients2.items = customerUi.items
-        customerUi.ingredients3.items = customerUi.items
+        // Build Stages
+        customerUi.initScene()
+        restaurantUi.initScene()
 
-        stage?.title = "Restaurant"
-        stage?.scene = Scene(FXMLLoader.load(javaClass.getResource("userInterface/RestaurantUi.fxml")))
-        stage?.show()
-
-        val stage2 = Stage()
-        stage2?.title = "Customer"
-        stage2?.scene = Scene(FXMLLoader.load(javaClass.getResource("userInterface/CustomerUi.fxml")))
-        stage2?.show()
-
+        // Add UI's to list of observers
         observers = mutableListOf(customerUi, restaurantUi)
     }
 }
