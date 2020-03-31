@@ -13,7 +13,7 @@ abstract class Factory {
         if (base == "Cheese") {
             product = Cheese(Pizza())
         }
-        if (base == "Meat") {
+        if (base == "Pepperoni") {
             product = Pepperoni(Pizza())
         }
         if (base == "Special") {
@@ -25,7 +25,7 @@ abstract class Factory {
             if (string == "Extra Cheese") {
                 product = Cheese(product)
             }
-            if (string == "Extra Pepperoni") {
+            if (string == "Extra Meat") {
                 product = Pepperoni(product)
             }
             if (string == "Extra Tuna") {

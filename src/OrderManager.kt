@@ -1,23 +1,21 @@
 import javafx.application.Application
 import javafx.stage.Stage
-import userInterface.CustomerUi
-import userInterface.RestaurantUi
 
 class OrderManager() : Application() {
-    private lateinit var orders : MutableList<Order>
-    var pizzeria : Pizzeria = Pizzeria()
-    var customer : Customer = Customer("Gertjan", "Poelsnip 4")
-    private lateinit var customerUi : CustomerUi
-    private lateinit var restaurantUi : RestaurantUi
+    private var orders : MutableList<Order> = mutableListOf(Order())
+    private var pizzeria : Pizzeria = Pizzeria()
+    private var customer : Customer = Customer("Gertjan", "Poelsnip 4")
+    private lateinit var customerGUI : CustomerGUI
+    private lateinit var restaurantGUI : RestaurantGUI
     private lateinit var observers : MutableList<Observer>
 
-    fun addOrder(customer: Customer, base: String, list: MutableList<String>) : Boolean {
-
+    fun addOrder(customer: Customer, base: String, list: MutableList<String>){
         val product= pizzeria.createPizza(base, list)
         val order = Order(customer, product, pizzeria)
+        println(order.price)
 
+        orders.add(order)
         updateOrders()
-        return orders.add(order)
     }
 
     fun updateOrders() {
@@ -31,14 +29,12 @@ class OrderManager() : Application() {
      */
     override fun start(stage: Stage?) {
         // Initialize objects
-        customerUi = CustomerUi(this, customer)
-        restaurantUi = RestaurantUi(this, pizzeria)
-
-        // Build Stages
-        customerUi.initScene()
-        restaurantUi.initScene()
+        customerGUI = CustomerGUI(this, customer)
+        restaurantGUI = RestaurantGUI(this, pizzeria)
 
         // Add UI's to list of observers
-        observers = mutableListOf(customerUi, restaurantUi)
+        observers = mutableListOf(customerGUI, restaurantGUI)
+        observers.add(customerGUI)
+        observers.add(restaurantGUI)
     }
 }

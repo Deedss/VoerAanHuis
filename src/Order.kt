@@ -12,10 +12,18 @@ class Order() {
         products.add(product!!)
         this.pizzeria = pizzeria
 
+        for (item : IProduct in products) {
+            price += item.price
+        }
         checkForDiscount()
     }
 
+    /**
+     * Ups the customer points and sets the state depending on the number of points. Discount is dependent of State
+     */
     private fun checkForDiscount() {
+        customer.points?.plus(1)
+
         when (customer.state){
             is NoDiscount -> price
             is SmallDiscount -> price * 0.95
