@@ -12,8 +12,6 @@ class OrderManager() : Application() {
     fun addOrder(customer: Customer, base: String, list: MutableList<String>){
         val product= pizzeria.createPizza(base, list)
         val order = Order(customer, product, pizzeria)
-        println(order.price)
-
         orders.add(order)
         updateOrders()
     }

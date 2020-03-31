@@ -1,8 +1,7 @@
 import states.*
 
 class Customer(var name: String, var address: String) {
-    var points : Int? = null
-        get() = 0
+    var points : Int = 0
         set(value){
             field = value
             when (field) {

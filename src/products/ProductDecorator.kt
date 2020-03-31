@@ -1,5 +1,4 @@
 package products
 
-abstract class ProductDecorator(product: IProduct?){
-    protected var product : IProduct? = product
+abstract class ProductDecorator(protected var product: IProduct?){
 }

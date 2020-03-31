@@ -6,4 +6,6 @@ import products.ProductDecorator
 class Pepperoni(product: IProduct?) : ProductDecorator(product) ,IProduct {
     override var price: Float = 0.35f
         get() = product!!.price + field
+    override var description: String = "Pepperoni"
+        get() = product!!.description + " " + field
 }

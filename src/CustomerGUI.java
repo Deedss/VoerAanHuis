@@ -1,12 +1,13 @@
+import products.IProduct;
+
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class CustomerGUI extends Observer{
+public class CustomerGUI extends Observer implements FunctionsGUI{
     OrderManager orderManager;
     Customer customer;
 
@@ -57,7 +58,9 @@ public class CustomerGUI extends Observer{
 
     @Override
     public void update(Order order) {
-
+        orderList.removeAll();
+        orderList.setModel(getListModel(fillOrderList(order)));
+        orderList.updateUI();
     }
 
     private void listeners() {
@@ -80,9 +83,32 @@ public class CustomerGUI extends Observer{
         });
     }
 
-    private DefaultComboBoxModel<String> getComboBoxModel(List<String> yourClassList)
-    {
+    @Override
+    public List<String> fillOrderList(Order order) {
+        ArrayList<String> list = new ArrayList<>();
+        for(IProduct product : order.getProducts()) {
+            List<String> descList = new ArrayList<String>(Arrays.asList(product.getDescription().split(" ")));
+            for (String string : descList) {
+                list.add("Contains: " + string);
+            }
+            list.add("Prijs: " + product.getPrice());
+        }
+        return list;
+    }
+
+    @Override
+    public DefaultComboBoxModel<String> getComboBoxModel(List<String> yourClassList) {
         String[] comboBoxModel = yourClassList.toArray(new String[0]);
         return new DefaultComboBoxModel<>(comboBoxModel);
+    }
+
+    @Override
+    public DefaultListModel<?> getListModel(List<String> yourClassList) {
+        DefaultListModel listModel = new DefaultListModel();
+        for (int i = 0; i < yourClassList.size(); i++)
+        {
+            listModel.addElement(yourClassList.get(i));
+        }
+        return listModel;
     }
 }
