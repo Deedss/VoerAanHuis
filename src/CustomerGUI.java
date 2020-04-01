@@ -1,8 +1,13 @@
 import products.IProduct;
+import states.Arrived;
+import states.OnRoute;
+import states.Ordered;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +16,7 @@ public class CustomerGUI extends Observer implements FunctionsGUI{
     OrderManager orderManager;
     Customer customer;
 
+    private Order order;
 
     private ArrayList<String> ingredientsList = new ArrayList<>();
     private ArrayList<String> pizzaList = new ArrayList<>();
@@ -21,8 +27,7 @@ public class CustomerGUI extends Observer implements FunctionsGUI{
     private JComboBox ingredients_2;
     private JComboBox ingredients_3;
     private JComboBox basePizza;
-    private JLabel Label;
-    private JButton btn_Received;
+    private JLabel label;
 
     CustomerGUI(OrderManager orderManager,Customer customer) {
         this.orderManager = orderManager;
@@ -46,6 +51,7 @@ public class CustomerGUI extends Observer implements FunctionsGUI{
         JFrame jFrame = new JFrame("Customer");
         jFrame.setContentPane(panel);
         jFrame.setSize(600, 800);
+        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jFrame.setResizable(false);
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
@@ -58,7 +64,8 @@ public class CustomerGUI extends Observer implements FunctionsGUI{
 
     @Override
     public void update(Order order) {
-        orderList.removeAll();
+        System.out.println("updated");
+        this.order = order;
         orderList.setModel(getListModel(fillOrderList(order)));
         orderList.updateUI();
     }
@@ -67,6 +74,7 @@ public class CustomerGUI extends Observer implements FunctionsGUI{
         btn_PlaceOrder.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                orderList.setModel(new DefaultListModel());
                 List<String> list = new ArrayList<>();
                 list.add(ingredients_1.getSelectedItem().toString());
                 list.add(ingredients_2.getSelectedItem().toString());
@@ -74,25 +82,30 @@ public class CustomerGUI extends Observer implements FunctionsGUI{
                 orderManager.addOrder(customer, basePizza.getSelectedItem().toString(), list);
             }
         });
-
-        btn_Received.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-            }
-        });
     }
 
     @Override
     public List<String> fillOrderList(Order order) {
         ArrayList<String> list = new ArrayList<>();
+        list.add("The order contains the following products");
         for(IProduct product : order.getProducts()) {
-            List<String> descList = new ArrayList<String>(Arrays.asList(product.getDescription().split(" ")));
-            for (String string : descList) {
-                list.add("Contains: " + string);
+            if (product.getDescription().contains("Free")) {
+                list.add("Contains: " + product.getDescription());
+            } else {
+                List<String> descList = new ArrayList<String>(Arrays.asList(product.getDescription().split(" ")));
+                for (int i = 0; i < descList.size(); i++ ) {
+                    if (i == 0) {
+                        list.add("The product is: " + descList.get(i));
+                    } else {
+                        list.add("Ingredients: " + descList.get(i));
+                    }
+                }
+                list.add("Prijs: " + String.format("%.2f", BigDecimal.valueOf(order.getPrice())));
             }
-            list.add("Prijs: " + product.getPrice());
         }
+        list.add("");
+        list.add("");
+        list.add("Orderstatus:" + order.getState().getDescription());
         return list;
     }
 
@@ -105,9 +118,8 @@ public class CustomerGUI extends Observer implements FunctionsGUI{
     @Override
     public DefaultListModel<?> getListModel(List<String> yourClassList) {
         DefaultListModel listModel = new DefaultListModel();
-        for (int i = 0; i < yourClassList.size(); i++)
-        {
-            listModel.addElement(yourClassList.get(i));
+        for (String s : yourClassList) {
+            listModel.addElement(s);
         }
         return listModel;
     }

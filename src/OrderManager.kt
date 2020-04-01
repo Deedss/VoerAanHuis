@@ -1,5 +1,10 @@
 import javafx.application.Application
 import javafx.stage.Stage
+import states.Ordered
+import java.lang.Thread.onSpinWait
+import java.lang.Thread.sleep
+import kotlin.concurrent.timerTask
+
 
 class OrderManager() : Application() {
     private var orders : MutableList<Order> = mutableListOf(Order())
@@ -13,10 +18,18 @@ class OrderManager() : Application() {
         val product= pizzeria.createPizza(base, list)
         val order = Order(customer, product, pizzeria)
         orders.add(order)
-        updateOrders()
+        changeOrderState(order)
     }
 
-    fun updateOrders() {
+    private fun changeOrderState(order : Order) {
+        order.state = order.state?.nextState()
+        println(order.state?.description)
+        updateOrders()
+
+        TODO( "Rerun this function every few seconds and update the state. Or try something else")
+    }
+
+    private fun updateOrders() {
         for (observer in observers) {
             observer.update(orders.last())
         }

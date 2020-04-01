@@ -1,11 +1,13 @@
 package states
 
 class OnRoute : StatusState() {
+    override var description: String = "OnRoute"
+
     override fun nextState(): StatusState {
-        TODO("Not yet implemented")
+        return Arrived()
     }
 
     override fun prevState(): StatusState {
-        TODO("Not yet implemented")
+        return Preparing()
     }
 }

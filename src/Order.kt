@@ -6,7 +6,7 @@ class Order() {
     var products : MutableList<IProduct> = mutableListOf()
     private lateinit var pizzeria: Pizzeria
     var price : Float = 0F
-    var state : StatusState = Ordered()
+    var state : StatusState? = Ordered()
 
     constructor(customer: Customer, product : IProduct?, pizzeria: Pizzeria) : this() {
         this.customer = customer
@@ -31,13 +31,18 @@ class Order() {
                 price = (price * 0.95).toFloat()
             }
             is FreeDrink -> {
-                products.add(Soda())
+                val product : IProduct = Soda()
+                product.price = 0.0F
+                product.description = "Free Soda"
+                products.add(product)
             }
             is FreePizza -> {
-                products.add(Pizza())
+                val product : IProduct = Pizza()
+                product.price = 0.0F
+                product.description = "Free Pizza"
+                products.add(product)
             }
         }
         customer.points += 1
-        println(price)
     }
 }
