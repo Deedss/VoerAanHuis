@@ -7,17 +7,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class RestaurantGUI extends Observer implements FunctionsGUI{
-
-    private OrderManager orderManager;
-    private Pizzeria pizzeria;
-
     // GUI ELEMENTS
     private JPanel panel;
-    private JList orderList;
+    private JTextArea orderList;
 
-    public RestaurantGUI(OrderManager orderManager, Pizzeria pizzeria) {
-        this.orderManager = orderManager;
-        this.pizzeria = pizzeria;
+    public RestaurantGUI() {
         initGui();
     }
 
@@ -31,50 +25,47 @@ public class RestaurantGUI extends Observer implements FunctionsGUI{
         jFrame.setVisible(true);
     }
 
+    /**
+     * Updates the order and UI when called from observer
+     */
     @Override
     public void update(Order order) {
-        orderList.setModel(getListModel(fillOrderList(order)));
-        orderList.updateUI();
+        orderList.setText(fillOrderList(order));
     }
 
+    /**
+     * Create string to fill textarea with current order information
+     */
     @Override
-    public List<String> fillOrderList(Order order) {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("The order contains the following products");
+    public String fillOrderList(Order order) {
+        StringBuilder list = new StringBuilder();
+        list.append("The order contains the following products\n");
         for(IProduct product : order.getProducts()) {
             if (product.getDescription().contains("Free")) {
-                list.add("Contains: " + product.getDescription());
+                list.append("Contains: ").append(product.getDescription()).append("\n");
             } else {
                 List<String> descList = new ArrayList<String>(Arrays.asList(product.getDescription().split(" ")));
                 for (int i = 0; i < descList.size(); i++ ) {
                     if (i == 0) {
-                        list.add("The product is: " + descList.get(i));
+                        list.append("The product is: ").append(descList.get(i)).append("\n");
                     } else {
-                        list.add("Ingredients: " + descList.get(i));
+                        list.append("Ingredients: ").append(descList.get(i)).append("\n");
                     }
                 }
-                list.add("Prijs: " + String.format("%.2f", BigDecimal.valueOf(order.getPrice())));
+                list.append("Prijs: ").append(String.format("%.2f", BigDecimal.valueOf(order.getPrice()))).append("\n");
             }
         }
-        list.add("");
-        list.add("");
-        list.add("Orderstatus:" + order.getState().getDescription());
-        return list;
+        list.append("\nOrderstatus:").append(order.getState().getDescription()).append("\n");
+        return list.toString();
     }
 
+    /**
+     * Fill combobox for Swing UI
+     */
     @Override
     public DefaultComboBoxModel<String> getComboBoxModel(List<String> yourClassList) {
         String[] comboBoxModel = yourClassList.toArray(new String[0]);
         return new DefaultComboBoxModel<>(comboBoxModel);
-    }
-
-    @Override
-    public DefaultListModel<?> getListModel(List<String> yourClassList) {
-        DefaultListModel listModel = new DefaultListModel();
-        for (String s : yourClassList) {
-            listModel.addElement(s);
-        }
-        return listModel;
     }
 }
 

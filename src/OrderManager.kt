@@ -1,3 +1,5 @@
+import states.Arrived
+
 /**
  * Class OrderManager to handle all information from the GUI's and create orders,
  * acts as the inbetween for the GUI's and uses the Observer class to
@@ -16,7 +18,7 @@ class OrderManager(){
     init {
         // Initialize objects
         customerGUI = CustomerGUI(this, customer)
-        restaurantGUI = RestaurantGUI(this, pizzeria)
+        restaurantGUI = RestaurantGUI()
 
         // Add UI's to list of observers
         observers = mutableListOf(customerGUI, restaurantGUI)
@@ -34,16 +36,30 @@ class OrderManager(){
         val product= pizzeria.createPizza(base, list)
         val order = Order(customer, product, pizzeria)
         orders.add(order)
-        changeOrderState(order)
+        updateOrders()
+
+        //Change order state based on random interval from 3 to 10 seconds
+        Thread {
+            while(order.state !is Arrived) {
+                Thread.sleep((3000..10000).random().toLong())
+                changeOrderState(order)
+                println("Changed order state to" + order.state)
+            }
+        }.start()
     }
 
+    /**
+     * Update order state
+     * @param order, order to update
+     */
     private fun changeOrderState(order : Order) {
         order.state = order.state?.nextState()
-        println(order.state?.description)
         updateOrders()
-        TODO( "Rerun this function every few seconds and update the state. Or try something else")
     }
 
+    /**
+     * Notify all observers that the order has changed
+     */
     private fun updateOrders() {
         for (observer in observers) {
             observer.update(orders.last())
