@@ -1,5 +1,8 @@
 package states
 
+/**
+ * Ordered StatusState, indicating that Order is ordered.
+ */
 class Ordered : StatusState() {
     override var description: String = "Ordered"
 

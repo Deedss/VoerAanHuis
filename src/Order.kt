@@ -1,21 +1,34 @@
 import products.*
 import states.*
 
+/**
+ * Order class to hold all variables for the Order. Also checks for discount.
+ */
 class Order() {
+    // All variables.
     private lateinit var customer : Customer
     var products : MutableList<IProduct> = mutableListOf()
     private lateinit var pizzeria: Pizzeria
     var price : Float = 0F
     var state : StatusState? = Ordered()
 
+    /**
+     * Secondary constructor to create an Order object.
+     * @param customer, Customer to add
+     * @param product, IProduct to add
+     * @param pizzeria, Pizzeria to add
+     */
     constructor(customer: Customer, product : IProduct?, pizzeria: Pizzeria) : this() {
         this.customer = customer
         products.add(product!!)
         this.pizzeria = pizzeria
 
+        // Add up all the prices.
         for (item : IProduct in products) {
             price += item.price
         }
+
+        // CHeck for discount
         checkForDiscount()
     }
 

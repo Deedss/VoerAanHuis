@@ -1,12 +1,8 @@
-import javafx.application.Application
-import javafx.stage.Stage
-import states.Ordered
-import java.lang.Thread.onSpinWait
-import java.lang.Thread.sleep
-import kotlin.concurrent.timerTask
-
-
-class OrderManager() : Application() {
+/**
+ * Class OrderManager to handle all information from the GUI's and create orders,
+ * acts as the inbetween for the GUI's and uses the Observer class to
+ */
+class OrderManager(){
     private var orders : MutableList<Order> = mutableListOf(Order())
     private var pizzeria : Pizzeria = Pizzeria()
     private var customer : Customer = Customer("Gertjan", "Poelsnip 4")
@@ -25,7 +21,6 @@ class OrderManager() : Application() {
         order.state = order.state?.nextState()
         println(order.state?.description)
         updateOrders()
-
         TODO( "Rerun this function every few seconds and update the state. Or try something else")
     }
 
@@ -38,7 +33,7 @@ class OrderManager() : Application() {
     /**
      * Starts the whole application. Creates both UI's and adds them to the list of observers.
      */
-    override fun start(stage: Stage?) {
+    fun start() {
         // Initialize objects
         customerGUI = CustomerGUI(this, customer)
         restaurantGUI = RestaurantGUI(this, pizzeria)

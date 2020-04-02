@@ -1,5 +1,8 @@
 package states
 
+/**
+ * Preparing StatusState, indicating that order is being prepared.
+ */
 class Preparing : StatusState() {
     override var description: String = "Preparing"
 
