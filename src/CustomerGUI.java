@@ -71,7 +71,6 @@ public class CustomerGUI extends Observer implements FunctionsGUI{
     @Override
     public void update(Order order) {
         orderList.setText(fillOrderList(order));
-        orderList.updateUI();
         if(order.getState().getDescription().equals("Arrived")){
             //Customer can only order again when last order has arrived
             btn_PlaceOrder.setEnabled(true);

@@ -43,7 +43,6 @@ class OrderManager(){
             while(order.state !is Arrived) {
                 Thread.sleep((3000..10000).random().toLong())
                 changeOrderState(order)
-                println("Changed order state to" + order.state)
             }
         }.start()
     }
